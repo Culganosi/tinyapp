@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = 3030; // default port 8080
+app.set("view engine", "ejs");
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
