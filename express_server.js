@@ -5,13 +5,30 @@ const app = express();
 const PORT = 8080; // default port 8080
 app.set("view engine", "ejs");
 
+// Middleware
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+
+// Database 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
 
+const users = { 
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID", 
+    email: "user2@example.com", 
+    password: "dishwasher-funk"
+  }
+}
+
+// Function to Generate randomString
 function generateRandomString(randomStrLength) {
   let result = '';
   let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -21,10 +38,25 @@ function generateRandomString(randomStrLength) {
   }
   return result;
 }
+// Routes
 
 app.get('/', (req, res) => {
   res.redirect('/urls');
 });
+
+app.post('/register', (req, res) => {
+  const newUserID = generateRandomString(14);
+  const email = req.body.email;
+  const password = req.body.password;
+  const user = {
+    id: newUserID,
+    email: email,
+    password: password
+  };
+  users[newUserID] = user;
+  console.log(users)
+  res.redirect("/urls")
+  })
 
 app.post('/login', (req, res) => {
   let username = req.body.username;
