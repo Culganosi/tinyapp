@@ -14,14 +14,16 @@
         <div class="nav-item nav-link"> Logged in as <%= user.email %></div>
           <form method="POST" action="/logout">
           <button type="submit" class="btn btn-primary">Logout</button> 
+          <!-- <a class="btn btn-outline-light btn-sm mr-2" action="/logout" href="/urls" role="button">Logout</a> -->
        </form>
        <% } else { %>
        <form method="GET" action="/register">
-         <button type="submit" class="btn btn-primary">Register</button>
+        <a class="btn btn-outline-light btn-sm mr-2" href="/register" role="button">Register</a>
        </form>
        <form method="GET" action="/login">
-        <button type="submit" class="btn btn-primary">Log in</button>
+        <a class="btn btn-outline-light btn-sm mr-2" href="/login" role="button">Log in</a>
       </form>
        <% } %>
   </nav>
 </header>
+
