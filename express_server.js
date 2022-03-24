@@ -1,5 +1,5 @@
 const express = require("express");
-const cookieSession = require('cookie-parser')
+const cookieSession = require('cookie-session')
 const morgan = require('morgan'); // import morgan
 const bodyParser = require("body-parser");
 const bcrypt = require('bcryptjs');
@@ -12,7 +12,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'session',
-  keys: [],
+  keys: ['key1'],
 }));
 
 
@@ -29,7 +29,6 @@ const urlDatabase = {
         
     }
 };
-
 
 const users = { 
   "userRandomID": {
@@ -56,8 +55,7 @@ function generateRandomString(randomStrLength) {
       chars.length));
   }
   return result;
-}
-
+};
 const findID = function(users, id) {
   for (let user in users) {
     if (users[user].id === id) {
@@ -82,7 +80,6 @@ const findPW = function(users, password) {
   }
   return undefined;
 };
-
 const urlForUsers = function (id, urlList) {
   const userLinks = {};
   for (let url in urlList) {
@@ -112,7 +109,7 @@ app.post('/register', (req, res) => {
   if (user.email === '' || user.password === '') {
     res.status(400).send("ERROR 400 INPUT FIELDS EMPTY")
   } else if (!userEmail) {
-    res.cookie('user_id', newUserID)
+    req.session['user_id'] = 'user_id';
     res.redirect("/urls")
   } else if (userEmail === email) {
       res.status(400).send("ERROR 400 DUPLICATE EMAIL DETECTED")
