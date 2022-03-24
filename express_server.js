@@ -46,6 +46,19 @@ const users = {
 // urlDatabase[shortURL].longURL = newLongUrl;
 // console.log(newLongUrl);
 
+const getUserByEmail = function(email, database) {
+  // lookup magic...
+  return user;
+};
+
+const findEmail = function(email, database) {
+  for (let property in database) {
+    if (email === database[property].email) {
+      return email;
+    }
+  }
+  return undefined;
+
 // Function to Generate randomString
 function generateRandomString(randomStrLength) {
   let result = '';
@@ -64,14 +77,14 @@ const findID = function(users, id) {
   }
   return undefined;
 };
-const findEmail = function(users, email) {
-  for (let user in users) {
-    if (users[user].email === email) {
-      return email;
-    }
-  }
-  return undefined;
-};
+// const findEmail = function(users, email) {
+//   for (let user in users) {
+//     if (users[user].email === email) {
+//       return email;
+//     }
+//   }
+//   return undefined;
+// };
 const findPW = function(users, password) {
   for (let user in users) {
     if (users[user].password === password) {
