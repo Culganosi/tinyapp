@@ -38,6 +38,31 @@ function generateRandomString(randomStrLength) {
   }
   return result;
 }
+
+const findID = function(users, id) {
+  for (let user in users) {
+    if (users[user].id === id) {
+      return id;
+    }
+  }
+  return false;
+};
+const findEmail = function(users, email) {
+  for (let user in users) {
+    if (users[user].email === email) {
+      return email;
+    }
+  }
+  return false;
+};
+const findPW = function(users, password) {
+  for (let user in users) {
+    if (users[user].password === password) {
+      return password;
+    }
+  }
+  return false;
+};
 // Routes
 
 app.get('/', (req, res) => {
@@ -47,6 +72,7 @@ app.get('/', (req, res) => {
 app.post('/register', (req, res) => {
   const newUserID = generateRandomString(14);
   const email = req.body.email;
+  const userEmail = findEmail(users, email)
   const password = req.body.password;
   const user = {
     id: newUserID,
@@ -54,29 +80,57 @@ app.post('/register', (req, res) => {
     password: password
   };
   users[newUserID] = user;
-  console.log(users)
-  res.redirect("/urls")
-  })
+  if (user.email === '' || user.password === '') {
+    res.status(400).send("ERROR INPUT FIELDS EMPTY")
+  } else if (!userEmail) {
+    res.cookie('user_id', newUserID)
+    res.redirect("/urls")
+  } else {
+      res.status(400).send("ERROR 400 DUPLICATE EMAIL DETECTED")
+  }
+ });
 
 app.post('/login', (req, res) => {
-  let username = req.body.username;
-  res.cookie('username', username);
-  res.redirect('/urls');
-});
+  const checkEmail = req.body.email;
+  const userEmail = findEmail(users, checkEmail)
+  const checkPW = req.body.password;
+  const userPW = findPW(users, checkPW)
+  const userID = req.body.id;
+  const id = findID(users, userID)
+    if (!userEmail) {
+      res.status(403).send("403 Error - No account w/ this email!")
+      return
+    }
+    if (userEmail === checkEmail && userPW === checkPW) {
+      console.log(id)
+        res.cookie('user_id', id);
+        res.redirect('/urls');
+    } else {
+      res.status(403).send("403 Error - PW DOESN'T MATCH!")
+     }
+   });
+  
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 });
 
 app.get('/urls', (req, res) => {
-  const templateVars = { urls: urlDatabase, username : req.cookies["username"] };
+  const userID = req.cookies["user_id"]
+  const user = users[userID]
+  const templateVars = { urls: urlDatabase, user };
   res.render('urls_index', templateVars);
 });
 
 app.get('/register', (req, res) => {
-  const templateVars = { urls: urlDatabase, username : req.cookies["username"] };
+  const templateVars = { urls: urlDatabase, user : req.cookies["user_id"] };
   res.render('urls_registration', templateVars);
+});
+
+app.get('/login', (req, res) => {
+  const templateVars = { urls: urlDatabase, user : req.cookies["user_id"] };
+  res.render('urls_login', templateVars);
 });
 
 app.post('/urls', (req, res) => {
@@ -92,14 +146,14 @@ res.redirect('/urls');
 })
 
 app.get('/urls/new', (req, res) => {
-  const templateVars = { urls: urlDatabase, username : req.cookies["username"] };
+  const templateVars = { urls: urlDatabase, user : req.cookies["user_id"] };
   res.render('urls_new', templateVars);
 });
 
 app.get('/urls/:shortURL', (req, res) => {
   const myShortURL = req.params.shortURL
   const myLongURL = urlDatabase[myShortURL]
-  const templateVars = { shortURL: myShortURL, longURL: myLongURL, username : req.cookies["username"] };
+  const templateVars = { shortURL: myShortURL, longURL: myLongURL, user : req.cookies["user_id"] };
   res.render('urls_show', templateVars);
 });
 app.get('/u/:shortURL', (req, res) => {
