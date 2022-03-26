@@ -1,5 +1,4 @@
 const getUserByEmail = function(email, database) {
-  // lookup magic...
   for (let el in database) {
     if (database[el].email === email) {
       return database[el];
