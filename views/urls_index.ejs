@@ -12,6 +12,7 @@
 <body>
   <main style="margin: 1em;">
     <h3>My URLs</h3>
+    <a href ="/urls/new"><button type="submit" class="btn btn-outline-success"> Create New URL</button></a>
     <table class="table">
       <thead>
         <tr>
@@ -27,10 +28,10 @@
             <td><%= url %></td>
             <td><%= urls[url].longURL %></td>
             <td>
-              <a href ="/urls/<%= url %>"><button type="submit" class="btn btn-primary"> EDIT</button></a>
+              <a href ="/urls/<%= url %>"><button type="submit" class="btn btn-outline-success"> EDIT</button></a>
             </td>
             <td><form method="POST" action="/urls/<%= url %>/delete">
-              <button type="submit" class="btn btn-primary">DELETE</button>
+              <button type="submit" class="btn btn-outline-danger">DELETE</button>
             </form>
           </td>
           </tr>
