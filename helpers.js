@@ -8,9 +8,6 @@ const getUserByEmail = function(email, database) {
   return undefined;
 };
 
-////
-
-
 const findEmail = function(email, database) {
   for (let el in database) {
     if (email === database[el].email) {
