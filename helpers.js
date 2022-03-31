@@ -7,7 +7,7 @@ const getUserByEmail = function(email, database) {
   return undefined;
 };
 
-const findEmail = function(email, database) {
+const findUserEmail = function(email, database) {
   for (let el in database) {
     if (email === database[el].email) {
       return email;
@@ -27,7 +27,7 @@ const generateRandomString = function(randomStrLength) {
   return result;
 };
 
-const findID = function(email, database) {
+const findUserID = function(email, database) {
   for (let el in database) {
     if (email === database[el].email) {
       return database[el].id;
@@ -36,7 +36,7 @@ const findID = function(email, database) {
   return undefined;
 };
 
-const findPW = function(email, database) {
+const findUserPW = function(email, database) {
   for (let el in database) {
     if (email === database[el].email) {
       return database[el].password;
@@ -55,4 +55,4 @@ const urlForUsers = function(id, database) {
   return userLinks;
 };
 
-module.exports = { findEmail, generateRandomString, findPW, urlForUsers, getUserByEmail, findID  };
+module.exports = { findUserEmail, generateRandomString, findUserPW, urlForUsers, getUserByEmail, findUserID  };
